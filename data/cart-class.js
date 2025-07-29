@@ -1,10 +1,14 @@
-const Cart = function(localStorageKey){
-  const cart = {
-    cartItems : undefined,
+class Cart {
+  cartItems;
+  localStorageKey;
 
-    loadFromStorage(){
-      
-    this.cartItems = JSON.parse(localStorage.getItem(localStorageKey));
+  constructor(localStorageKey){
+    this.localStorageKey = localStorageKey;
+    this.loadFromStorage();
+  }
+
+  loadFromStorage(){
+    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
 
     if(!this.cartItems){
       this.cartItems = [{
@@ -18,11 +22,11 @@ const Cart = function(localStorageKey){
         deliveryOptionId : '2'
         }]; 
     }
-    },
+    }
 
     saveToStorage(){
-    localStorage.setItem(localStorageKey, JSON.stringify(this.cartItems));
-  },
+      localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    }
 
     addToCart(productId){
       this.loadFromStorage()
@@ -43,9 +47,9 @@ const Cart = function(localStorageKey){
         })
       }
       this.saveToStorage()
-    },
+    }
 
-    removeFromCart(productId){
+      removeFromCart(productId){
     const newCart = [];
     this.cartItems.forEach((cartItem) => {
       if(cartItem.productId !== productId){
@@ -54,9 +58,9 @@ const Cart = function(localStorageKey){
     })
     this.cartItems = newCart;
     this.saveToStorage()
-  },
+  }
 
-    updateDeliveryOption(productId, deliveryOptionId){
+  updateDeliveryOption(productId, deliveryOptionId){
     let matchingItem;
       this.cartItems.forEach((item) => {
         if(item.productId === productId){
@@ -66,16 +70,12 @@ const Cart = function(localStorageKey){
       matchingItem.deliveryOptionId = deliveryOptionId;
       this.saveToStorage();
     }
-  }
-
-  return cart;
 }
 
-const cart = Cart('cart-oop');
-const businessCart = Cart('cart-business');
-businessCart.loadFromStorage();
-cart.loadFromStorage();
+
+const cart = new Cart('cart-oop');
+const businessCart = new Cart('cart-business');
 
 
-
-
+console.log(cart);
+console.log(businessCart)

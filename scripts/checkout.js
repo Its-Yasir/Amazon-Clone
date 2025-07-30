@@ -3,13 +3,12 @@ import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 //import '../data/backend-practice.js'
 import { loadProducts, loadProductsFetch } from "../data/products.js";
 
-Promise.all([
-  loadProductsFetch()
-]).then(()=>{
+async function loadPage(){
+  await loadProductsFetch();
   renderOrderSummary();
   renderPaymentSummary();
-})
-
+}
+loadPage();
 /*
 loadProducts(()=>{
   renderOrderSummary();

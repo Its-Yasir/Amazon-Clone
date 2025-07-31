@@ -209,3 +209,12 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+.update-quantity-input{
+  width: 40px;
+  display: none;
+}
+.js-save-primary{
+  display: none;
+  margin-left: 5px;
+  cursor: pointer;
+}

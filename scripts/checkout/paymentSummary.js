@@ -3,14 +3,13 @@ import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/delieveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
-
 export function renderPaymentSummary(){
+  let cartQuantity = 0;
   let productPriceCents = 0;
   let shippingPriceCents = 0;
   cart.forEach((cartItem) =>{
     const product = getProduct(cartItem.productId)
     productPriceCents += product.priceCents * cartItem.quantity;
-
     const delieveryOption = getDeliveryOption(cartItem.deliveryOptionId)
     shippingPriceCents += delieveryOption.priceCents;
   });
@@ -24,7 +23,7 @@ export function renderPaymentSummary(){
     </div>
 
     <div class="payment-summary-row">
-      <div>Items (3):</div>
+      <div class="js-payment-items"></div>
       <div class="payment-summary-money">
       $${formatCurrency(productPriceCents)}
       </div>
@@ -64,7 +63,6 @@ export function renderPaymentSummary(){
   `
 
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
-
   document.querySelector('.js-place-order')
     .addEventListener('click', async ()=>{
       let response = await fetch('https://supersimplebackend.dev/orders', {
@@ -80,4 +78,12 @@ export function renderPaymentSummary(){
       addOrder(order)
       console.log(order)
     })
+} 
+export function showCartQuantityPayment(cart){
+  let cartQuantity = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
+  })
+  document.querySelector('.js-payment-items').innerHTML = `Items(${cartQuantity})`;
+  
 }

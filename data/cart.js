@@ -18,8 +18,8 @@ function saveToStorage(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function addToCart(productId){
-  
+export function addToCart(productId, fun){
+      console.log(document.querySelector(`.js-select-${productId}`).value);
       let matchingItem;
       cart.forEach((item) => {
         if(item.productId === productId){
@@ -27,12 +27,12 @@ export function addToCart(productId){
         }
       })
       if(matchingItem){
-        matchingItem.quantity += 1;
+        matchingItem.quantity += fun;
       }
       else{
         cart.push({
           productId : productId,
-          quantity : 1, 
+          quantity : fun, 
           deliveryOptionId : '1'
         })
       }

@@ -93,5 +93,4 @@ async function renderOrders() {
   //console.log(html);
   document.querySelector('.orders-grid').innerHTML = html;
 }
-console.log(JSON.parse(localStorage.getItem('cart')))
 renderOrders();

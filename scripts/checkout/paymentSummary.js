@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart.js";
+import { cart, saveToStorage } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/delieveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
@@ -63,20 +63,31 @@ export function renderPaymentSummary(){
   `
 
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+
   document.querySelector('.js-place-order')
     .addEventListener('click', async ()=>{
-      let response = await fetch('https://supersimplebackend.dev/orders', {
-        method : 'POST',
-        headers :{
-          'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify({
-          cart : cart
-        })
-      });
+      if (cart.length === 0) {
+        alert('Your cart is empty. Cannot place order.');
+        return;
+      } 
+      try{
+          let response = await fetch('https://supersimplebackend.dev/orders', {
+            method : 'POST',        
+            headers :{
+              'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+              cart : cart                             
+            })
+        });
       let order = await response.json();
-      addOrder(order)
-      console.log(order)
+      addOrder(order);
+      cart.length=0;
+      saveToStorage()
+      window.location.href = 'orders.html';
+      }catch(error){
+      console.log('Unexpected Erro, Please try again later')
+    }
     })
 } 
 export function showCartQuantityPayment(cart){
@@ -85,5 +96,4 @@ export function showCartQuantityPayment(cart){
     cartQuantity += cartItem.quantity;
   })
   document.querySelector('.js-payment-items').innerHTML = `Items(${cartQuantity})`;
-  
 }
